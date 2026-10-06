@@ -43,7 +43,12 @@
       --c7: #7a6a0d;
       --c8: #b3261e;
       --c9: #3d6e22;
+      --c10: #8a5a2b;
+      --c11: #2c3e91;
+      --c12: #8e44ad;
+      --c13: #c2410c;
       --cx: #4a5560;
+      --grid: #d3dcd8;
       --font: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
       --mono: "Roboto Mono", ui-monospace, Menlo, Consolas, monospace;
     }
@@ -70,7 +75,17 @@
         --c7: #d6c35a;
         --c8: #f2867d;
         --c9: #93cc6d;
-        --cx: #a7b3bd;
+        --c10: #d6a26b;
+        --c11: #93a6f2;
+        --c12: #c992e6;
+        --c13: #f39a62;
+        --c10: #d6a26b;
+      --c11: #93a6f2;
+      --c12: #c992e6;
+      --c13: #f39a62;
+      --cx: #a7b3bd;
+      --grid: #26332f;
+        --grid: #26332f;
         color-scheme: dark
       }
     }
@@ -313,6 +328,7 @@
       cursor: grabbing
     }
 
+    /* ---- nút sơ đồ ---- */
     .node text {
       font-family: var(--font);
       font-size: 12.5px;
@@ -324,21 +340,59 @@
     }
 
     .node.d0 text {
-      font-size: 16px;
-      font-weight: 800
+      font-size: 17px;
+      font-weight: 800;
+      fill: var(--surface);
+      stroke: none
+    }
+
+    .node .root-box {
+      fill: var(--accent);
+      filter: drop-shadow(0 4px 10px rgba(15, 107, 92, .28))
     }
 
     .node.d1 text {
       font-size: 14.5px;
-      font-weight: 700
+      font-weight: 700;
+      stroke: none
+    }
+
+    .node .pill {
+      fill-opacity: .12;
+      stroke-opacity: .5;
+      stroke-width: 1.2;
+      transition: fill-opacity .15s, stroke-opacity .15s
+    }
+
+    .node.d1:hover .pill {
+      fill-opacity: .2;
+      stroke-opacity: .8
     }
 
     .node.d2 text {
       font-weight: 600
     }
 
+    .node circle {
+      stroke-width: 2
+    }
+
+    .node .cnt {
+      font-size: 11px;
+      font-weight: 700;
+      fill: var(--muted)
+    }
+
     .node {
       cursor: pointer
+    }
+
+    .node:hover text {
+      fill: var(--accent)
+    }
+
+    .node.d0:hover text {
+      fill: var(--surface)
     }
 
     .node.sel text {
@@ -346,14 +400,53 @@
       font-weight: 700
     }
 
+    .node.d0.sel text,
+    .node.d1.sel text,
+    .node.d1:hover text {
+      fill: var(--ink)
+    }
+
+    .node.d0.sel text {
+      fill: var(--surface)
+    }
+
+    .node.sel .pill {
+      fill-opacity: .24;
+      stroke-opacity: 1;
+      stroke-width: 2
+    }
+
+    .node.d0.sel .root-box {
+      stroke: var(--ink);
+      stroke-width: 2.5;
+      stroke-opacity: .35
+    }
+
     .node.hit text {
       text-decoration: underline
     }
 
+    /* đường nối: dày ở gốc, mảnh dần về ngọn */
     .link {
       fill: none;
-      stroke-opacity: .45;
-      stroke-width: 1.6
+      stroke-opacity: .55;
+      stroke-width: 1.3;
+      stroke-linecap: round
+    }
+
+    .link.l1 {
+      stroke-width: 2.8;
+      stroke-opacity: .6
+    }
+
+    .link.l2 {
+      stroke-width: 1.8
+    }
+
+    /* lưới chấm nền – vị trí/kích thước do JS cập nhật theo zoom */
+    #stage {
+      background-image: radial-gradient(circle, var(--grid) 1.1px, transparent 1.3px);
+      background-size: 24px 24px
     }
 
     .hint {
@@ -609,11 +702,62 @@
     }
 
     .kids button {
-      display: block;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       width: 100%;
       text-align: left;
-      margin-bottom: 5px;
-      font-size: 13px
+      margin-bottom: 6px;
+      font-size: 13px;
+      border-left: 3px solid var(--kc, var(--line));
+      transition: background .15s, transform .15s
+    }
+
+    .kids button span {
+      flex: 1;
+      min-width: 0
+    }
+
+    .kids button small {
+      flex: none;
+      font: 700 11px var(--mono);
+      color: var(--muted);
+      background: var(--bg);
+      border-radius: 999px;
+      padding: 1px 7px
+    }
+
+    .kids button:hover {
+      background: var(--accent-soft);
+      transform: translateX(2px)
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      font-size: 12.5px;
+      color: var(--muted)
+    }
+
+    .legend h3 {
+      width: 100%;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin: 16px 0 0
+    }
+
+    .legend b {
+      color: var(--ink);
+      margin-right: 3px
+    }
+
+    .legend .cnt {
+      font: 700 11px var(--mono);
+      background: var(--bg);
+      border-radius: 999px;
+      padding: 0 6px
     }
 
     .empty {
@@ -973,6 +1117,10 @@
         font-size: 14px
       }
 
+      .node.d0 text {
+        font-size: 15px
+      }
+
       #outline {
         padding: 12px 12px calc(24px + env(safe-area-inset-bottom))
       }
@@ -1068,6 +1216,7 @@
           <div class="pct" id="zpct" aria-hidden="true">100%</div>
           <button id="zout" aria-label="Thu nhỏ" title="Thu nhỏ">−</button>
           <button id="zfit" aria-label="Vừa khung" title="Vừa khung">⌂</button>
+          <button id="zlay" aria-label="Đổi bố cục 1 bên / 2 bên" title="Bố cục: 2 bên" aria-pressed="true">⇆</button>
           <button id="zfull" aria-label="Toàn màn hình" title="Toàn màn hình" aria-pressed="false">⛶</button>
         </div>
       </div>
@@ -1392,8 +1541,11 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
   </script>
   <script>
     (function () {
-      const COLORS = ['--cx', '--c1', '--c2', '--c3', '--c4', '--c5', '--c6', '--c7', '--c8', '--c9', '--cx', '--cx'];
+      // mỗi nhánh cấp 1 một màu riêng (C1–C9 + 4 nhánh tổng hợp) – trước đây nhánh 12, 13 rơi về màu xám mặc định
+      const COLORS = ['--cx', '--c1', '--c2', '--c3', '--c4', '--c5', '--c6', '--c7', '--c8', '--c9', '--c10', '--c11', '--c12', '--c13'];
       const TAGS = {f: ['f', 'Công thức'], vd: ['vd', 'Ví dụ'], '!': ['w', 'Lưu ý'], '↔': ['x', 'Liên kết']};
+      const VS = '︎';   // ép ⚠ hiển thị dạng chữ đơn sắc, không bị Windows/iOS đổi thành emoji màu
+      const ICON = {f: 'ƒ ', vd: '▸ ', '!': '⚠' + VS + ' ', '↔': '↔ '};
 
       // ---- parse indentation DSL ----
       const lines = document.getElementById('data').textContent.split('\n').filter(l => l.trim());
@@ -1401,7 +1553,7 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
       for (const raw of lines) {
         const ind = raw.match(/^ */)[0].length / 2; let t = raw.trim(); let tag = null;
         const m = t.match(/^\{(f|vd|!|↔)\}\s*/); if (m) {tag = m[1]; t = t.slice(m[0].length);}
-        const parts = t.split(' :: '); const n = {id: ++uid, name: parts[0].trim(), d: (parts[1] || '').trim(), tag, children: []};
+        const parts = t.split(' :: '); const n = {id: ++uid, name: parts[0].trim().replace(/⚠(?!︎)/g, '⚠' + VS), d: (parts[1] || '').trim(), tag, children: []};
         while (stack[stack.length - 1].ind >= ind) stack.pop();
         stack[stack.length - 1].node.children.push(n); stack.push({node: n, ind});
       }
@@ -1427,9 +1579,14 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
 
       const svg = d3.select('#svg'); const g = svg.append('g');
       const gl = g.append('g'), gn = g.append('g');
-      const zpct = document.getElementById('zpct');
+      const zpct = document.getElementById('zpct'), stageEl = document.getElementById('stage');
       const zoom = d3.zoom().scaleExtent([.1, 4])
-        .on('zoom', e => {g.attr('transform', e.transform); zpct.textContent = Math.round(e.transform.k * 100) + '%'})
+        .on('zoom', e => {
+          const t = e.transform; g.attr('transform', t); zpct.textContent = Math.round(t.k * 100) + '%';
+          // lưới chấm nền di chuyển & co giãn cùng sơ đồ (cảm giác “canvas” như XMind/Miro)
+          const gs = 24 * t.k * (t.k < .5 ? 2 : 1);
+          stageEl.style.backgroundSize = `${gs}px ${gs}px`; stageEl.style.backgroundPosition = `${t.x}px ${t.y}px`;
+        })
         .on('start', e => {if (e.sourceEvent) hideHint()});
       // Nhấp đúp (chuột) hoặc chạm đúp (cảm ứng – d3 tự gọi lại listener này) vào CHỖ TRỐNG → phóng to ×1,8 quanh điểm chạm;
       // chạm đúp lên nút thì bỏ qua để không xung đột với mở/đóng nhánh
@@ -1442,77 +1599,181 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
       svg.call(zoom).on('dblclick.zoom', dblZoom);
       // Safari iOS/iPadOS: chặn cử chỉ phóng to cả trang (gesture*) – chỉ cho phóng to trong khung sơ đồ
       ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => {if (document.body.classList.contains('mapmode')) e.preventDefault()}, {passive: false}));
-      const DY = [0, 250, 250, 280, 300, 300, 300];
-      const dx = () => isM() ? 36 : 26;                       // khoảng cách dọc giữa nút (≥36px để dễ chạm)
-      const dy = i => isM() ? (i === 1 ? 175 : 190) : (DY[i] || 300); // khoảng cách ngang giữa các tầng
-      const maxChars = d => isM() ? 23 : (d.depth <= 1 ? 40 : d.depth === 2 ? 34 : 38);
+      // ===== Bố cục sơ đồ =====
+      // 'both'  : chủ đề trung tâm ở giữa, nửa nhánh bên phải, nửa bên trái (kiểu XMind) – mặc định khi màn hình ≥ 600px
+      // 'right' : mọi nhánh bên phải – mặc định trên điện thoại dọc (màn hẹp, cao)
+      // Người dùng đổi bằng nút ⇆; lựa chọn được ghi nhớ.
+      const LAY_KEY = 'sceoLayout';
+      let layPref = null; try {layPref = localStorage.getItem(LAY_KEY)} catch (e) { }
+      const layout = () => layPref || (innerWidth < 600 ? 'right' : 'both');
+      const ANIM = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 280;
+      const FF = '"Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+      const DXv = () => isM() ? 36 : 28;            // khoảng cách dọc giữa 2 nút (≥36px trên điện thoại để dễ chạm)
+      const GAP = () => isM() ? 40 : 56;            // khoảng cách từ cuối nhãn cha tới nút con
+      const maxChars = d => isM() ? 23 : (d.depth <= 1 ? 40 : d.depth === 2 ? 36 : 40);
+      // phông chữ phải khớp CSS .node text để đo nhãn chính xác
+      const FONT = d => {const m = isM(); return d.depth === 0 ? `800 ${m ? 15 : 17}px ${FF}` : d.depth === 1 ? `700 ${m ? 14 : 14.5}px ${FF}` : `${d.depth === 2 ? 600 : 400} ${m ? 13 : 12.5}px ${FF}`};
+      const cv = document.createElement('canvas').getContext('2d');
+      const measure = (s, f) => {cv.font = f; return cv.measureText(s).width};
       let selected = H, hits = new Set();
 
       function lbl(s, max) {return s.length > max ? s.slice(0, max - 1) + '…' : s}
+      const labelOf = d => (d.data.tag ? ICON[d.data.tag] : '') + lbl(d.data.name, maxChars(d));
+      const countOf = d => d._children && !d.children ? ' ' + d._children.length : '';
+      // gốc: điện thoại tách 2 dòng tại dấu “–” để khối trung tâm hẹp lại
+      // gốc trên điện thoại: tách tại “–” rồi ngắt dòng ≤15 ký tự → khối trung tâm hẹp, nhường chỗ cho nhánh
+      function wrap(s, n) {const out = []; let cur = ''; s.split(' ').forEach(w => {if (cur && (cur + ' ' + w).length > n) {out.push(cur); cur = w} else cur = cur ? cur + ' ' + w : w}); if (cur) out.push(cur); return out}
+      const rootLines = () => isM() ? H.data.name.split(' – ').flatMap(p => wrap(p, 15)) : [H.data.name];
+      // độ dài từ tâm nút tới mép ngoài nhãn (nơi đường nối tới con bắt đầu)
+      const ext = d => d.depth === 0 ? d.rw : d.depth === 1 ? d.tw + 24 : d.tw + 14;
+      const sideOf = d => d.depth === 0 ? 0 : d.side;
+
+      function layoutTree() {
+        const dxv = DXv(), gap = GAP(), both = layout() === 'both', K = H._children || [];
+        const half = Math.ceil(K.length / 2);
+        K.forEach((c, i) => {const s = both && i >= half ? -1 : 1; c.descendants().forEach(n => n.side = s)});
+        // đo nhãn
+        H.descendants().forEach(d => {
+          if (d.depth === 0) {const L = rootLines(); d.lines = L; d.rw = Math.max(...L.map(s => measure(s, FONT(d)))) / 2 + 18; d.rh = L.length * 20 + 18; return}
+          d.label = labelOf(d); d.cnt = countOf(d);
+          d.tw = measure(d.label, FONT(d)) + (d.cnt ? measure(d.cnt, `700 11px ${FF}`) + 4 : 0);
+        });
+        // vị trí dọc: dàn riêng từng bên rồi canh để gốc nằm giữa mỗi bên
+        const tree = d3.tree().nodeSize([dxv, 1]).separation((a, b) => (a.parent === b.parent ? 1 : 1.25) * (a.depth === 1 ? 1.32 : 1));
+        const vis = H.children;
+        if (vis) {
+          for (const grp of [vis.filter(c => c.side > 0), vis.filter(c => c.side < 0)]) {
+            if (!grp.length) continue;
+            H.children = grp; tree(H); const off = H.x;
+            grp.forEach(c => c.each(n => {n.x -= off}));
+          }
+          H.children = vis;
+        }
+        H.x = 0; H.y = 0;
+        // vị trí ngang theo CỘT: mỗi cấp bắt đầu sau nhãn DÀI NHẤT của cấp trước (cùng một bên)
+        // → đường nối không bao giờ cắt ngang chữ của nút khác, các cấp thẳng hàng dễ đọc
+        const shown = H.descendants().filter(d => d.depth > 0);
+        for (const s of [1, -1]) {
+          let x = H.rw + gap;
+          for (let dep = 1; ; dep++) {
+            const lv = shown.filter(d => d.side === s && d.depth === dep); if (!lv.length) break;
+            const mx = Math.max(...lv.map(ext));
+            lv.forEach(d => {d.y = s * x; d.cw = mx});   // cw: mép cột của cấp này (nhãn dài nhất)
+            x += mx + gap;
+          }
+        }
+      }
+
       function update(src) {
-        const DX = dx();
-        const tree = d3.tree().nodeSize([DX, 1]).separation((a, b) => a.parent === b.parent ? 1 : 1.25);
-        tree(H);
-        H.descendants().forEach(d => {let y = 0; for (let i = 1; i <= d.depth; i++)y += dy(i); d.y = y});
+        src = src || H;
+        layoutTree();
+        const DX = DXv(), tr = d3.transition().duration(ANIM).ease(d3.easeCubicOut);
         const nodes = H.descendants(), links = H.links();
-        const ln = gl.selectAll('path').data(links, d => d.target.key);
-        ln.join(en => en.append('path').attr('class', 'link'), u => u, ex => ex.remove())
-          .attr('stroke', d => col(d.target)).attr('d', d3.linkHorizontal().x(d => d.y).y(d => d.x));
+        const sx0 = src.y0 ?? src.y, sy0 = src.x0 ?? src.x;
+        // đường nối = đoạn thẳng từ cuối nhãn cha tới mép cột, rồi mới uốn cong tới con
+        // → phần cong chỉ nằm trong khe trống giữa 2 cột, không sượt qua nhãn dài của nút khác cùng cấp
+        const P = (x0, x1, y0, x2, y2) => {const m = (x1 + x2) / 2; return `M${x0},${y0}H${x1}C${m},${y0} ${m},${y2} ${x2},${y2}`};
+        const linkPath = l => {
+          const s = l.source, t = l.target, sd = t.side;
+          const x0 = s.y + sd * ext(s), x1 = s.depth === 0 ? x0 : s.y + sd * (s.cw + 8);
+          return P(x0, x1, s.x, t.y - sd * 6, t.x);
+        };
+        const flat = (x, y) => P(x, x, y, x, y);
+
+        // ---- đường nối: dày ở gốc, mảnh dần ----
+        const ln = gl.selectAll('path.link').data(links, d => d.target.key);
+        ln.exit().transition(tr).attr('d', flat(src.y, src.x)).style('opacity', 0).remove();
+        ln.enter().append('path').attr('class', d => 'link l' + Math.min(d.target.depth, 3)).attr('d', flat(sx0, sy0)).style('opacity', 0)
+          .merge(ln).attr('stroke', d => col(d.target)).transition(tr).attr('d', linkPath).style('opacity', 1);
+
+        // ---- nút ----
         const nd = gn.selectAll('g.node').data(nodes, d => d.key);
+        nd.exit().transition(tr).attr('transform', `translate(${src.y},${src.x})`).style('opacity', 0).remove();
         const en = nd.enter().append('g').attr('class', d => 'node d' + Math.min(d.depth, 3)).attr('tabindex', 0).attr('role', 'button')
+          .attr('transform', `translate(${sx0},${sy0})`).style('opacity', 0)
           .on('click', (e, d) => {
             toggle(d); select(d, d._children ? null : 'half');
             if (isM() && d.children) center(d);   // điện thoại: mở nhánh xong thì kéo nhánh con vào khung nhìn
           })
           .on('keydown', (e, d) => {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); toggle(d); select(d)} });
         en.append('rect').attr('class', 'ha');
-        en.append('circle');
-        en.append('text').attr('dy', '0.32em');
+        en.filter(d => d.depth <= 1).append('rect').attr('class', d => d.depth === 0 ? 'root-box' : 'pill');
+        en.filter(d => d.depth > 0).append('circle');
+        en.append('text');
+
         const all = en.merge(nd);
-        all.attr('transform', d => `translate(${d.y},${d.x})`)
-          .classed('sel', d => d === selected).classed('hit', d => hits.has(d.key));
-        all.select('circle').attr('r', d => d.depth === 0 ? 7 : d.depth === 1 ? 6 : 4.5)
-          .attr('fill', d => d._children && !d.children ? col(d) : getComputedStyle(document.body).backgroundColor)
-          .attr('stroke', d => col(d)).attr('stroke-width', 2);
-        all.select('text').attr('x', d => d.depth === 0 ? -14 : 10).attr('text-anchor', d => d.depth === 0 ? 'end' : 'start')
-          .text(d => {const t = d.data.tag ? ({f: 'ƒ ', vd: '▸ ', '!': '⚠ ', '↔': '↔ '})[d.data.tag] : ''; return t + lbl(d.data.name, maxChars(d)) + (d._children && !d.children ? '  (' + d._children.length + ')' : '')});
-        // vùng chạm trong suốt phủ cả chấm tròn lẫn nhãn
-        all.each(function (d) {
-          const w = this.querySelector('text').getComputedTextLength(); d.tw = w;
-          const x0 = d.depth === 0 ? -w - 22 : -12;
-          d3.select(this).select('rect.ha').attr('x', x0).attr('y', -DX / 2 + 1).attr('width', w + 34).attr('height', DX - 2);
+        all.classed('sel', d => d === selected).classed('hit', d => hits.has(d.key))
+          .attr('aria-expanded', d => d._children ? !!d.children : null)
+          .attr('aria-label', d => d.data.name + (d._children ? `, ${d._children.length} nhánh con` : ''));
+        all.transition(tr).attr('transform', d => `translate(${d.y},${d.x})`).style('opacity', 1);
+
+        all.select('circle').attr('r', d => d.depth === 1 ? 5.5 : 4.5)
+          .style('fill', d => d._children && !d.children ? col(d) : 'var(--bg)').style('stroke', col);
+        // khối chủ đề trung tâm
+        all.filter(d => d.depth === 0).select('rect.root-box')
+          .attr('x', d => -d.rw).attr('y', d => -d.rh / 2).attr('width', d => d.rw * 2).attr('height', d => d.rh).attr('rx', 14);
+        // “viên thuốc” cho nhánh chương
+        all.filter(d => d.depth === 1).select('rect.pill')
+          .attr('x', d => d.side > 0 ? 7 : -(d.tw + 24)).attr('y', -13).attr('width', d => d.tw + 17).attr('height', 26).attr('rx', 13)
+          .style('fill', col).style('stroke', col);
+        // nhãn
+        all.select('text').each(function (d) {
+          const t = d3.select(this).text(null);
+          if (d.depth === 0) {
+            t.attr('text-anchor', 'middle').attr('x', 0);
+            d.lines.forEach((s, i) => t.append('tspan').attr('x', 0).attr('dy', i ? '1.25em' : `${0.35 - (d.lines.length - 1) * 0.625}em`).text(s));
+            return;
+          }
+          const s = d.side, pad = d.depth === 1 ? 15 : 10;
+          t.attr('text-anchor', s > 0 ? 'start' : 'end').attr('x', s * pad).attr('dy', '0.34em');
+          if (s > 0) {t.append('tspan').text(d.label); if (d.cnt) t.append('tspan').attr('class', 'cnt').attr('dx', 4).text(d.cnt.trim())}
+          else {if (d.cnt) t.append('tspan').attr('class', 'cnt').text(d.cnt.trim()); t.append('tspan').attr('dx', d.cnt ? 4 : 0).text(d.label)}
         });
-        // đường nối xuất phát SAU cuối nhãn của nút cha (không vẽ xuyên qua chữ); gốc có nhãn bên trái nên đi thẳng từ chấm
-        const lk = d3.linkHorizontal();
-        gl.selectAll('path.link').attr('d', l => {
-          const s = l.source, t = l.target;
-          const sx = s.depth === 0 ? s.y + 8 : Math.min(s.y + 16 + (s.tw || 0), t.y - 24);
-          return lk({source: [sx, s.x], target: [t.y - 7, t.x]});
+        // vùng chạm trong suốt phủ chấm + nhãn
+        all.select('rect.ha').each(function (d) {
+          const r = d3.select(this);
+          if (d.depth === 0) r.attr('x', -d.rw - 4).attr('y', -d.rh / 2 - 4).attr('width', d.rw * 2 + 8).attr('height', d.rh + 8);
+          else {const w = ext(d) + 14; r.attr('x', d.side > 0 ? -10 : -w + 10).attr('y', -DX / 2 + 1).attr('width', w).attr('height', DX - 2)}
         });
-        nd.exit().remove();
+        nodes.forEach(d => {d.x0 = d.x; d.y0 = d.y});
       }
       function toggle(d) {if (!d._children) return; d.children = d.children ? null : d._children; update(d)}
+
+      // khung bao tính từ dữ liệu bố cục (không đo DOM → đúng cả khi đang chạy hiệu ứng)
+      function bounds(list) {
+        let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity; const h = DXv() / 2;
+        list.forEach(d => {
+          let a, b, c = d.x - h, e = d.x + h;
+          if (d.depth === 0) {a = -d.rw; b = d.rw; c = -d.rh / 2; e = d.rh / 2}
+          else if (d.side > 0) {a = d.y - 8; b = d.y + ext(d)} else {a = d.y - ext(d); b = d.y + 8}
+          x0 = Math.min(x0, a); x1 = Math.max(x1, b); y0 = Math.min(y0, c); y1 = Math.max(y1, e);
+        });
+        return {x: x0, y: y0, w: x1 - x0, h: y1 - y0};
+      }
       // vùng sơ đồ thực sự nhìn thấy (trên điện thoại trừ phần ngăn kéo đang che)
       function view() {
         const r = svg.node().getBoundingClientRect();
         const cover = isM() && !panel.hidden ? panel.getBoundingClientRect().height : 0;
         return {w: r.width, h: Math.max(120, r.height - cover)};
       }
-      function center(d, k) {
-        const v = view(); const t = d3.zoomTransform(svg.node());
-        const s = k || Math.max(t.k, isM() ? .9 : .75);
-        // điện thoại: đặt nút sát mép trái để nhãn & nhánh con có chỗ bên phải (gốc có nhãn bên trái)
-        const px = isM() ? (d.depth === 0 ? v.w - 24 : 18) : v.w * 0.32;
-        svg.transition().duration(450).call(zoom.transform, d3.zoomIdentity.translate(px - d.y * s, v.h / 2 - d.x * s).scale(s))
+      function go(tx, ty, s) {svg.transition().duration(450).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(s))}
+      function fitTo(list) {
+        const b = bounds(list), v = view(); if (!v.w || !isFinite(b.w)) return;
+        if (isM()) v.w -= 56;   // chừa cột nút zoom bên phải để không che nhãn
+        let s = Math.min(1.15, .94 * Math.min(v.w / (b.w + (isM() ? 24 : 80)), v.h / (b.h + 40)));
+        let tx = v.w / 2 - (b.x + b.w / 2) * s;
+        // điện thoại, bố cục 1 bên: không thu nhỏ dưới 0,8 (chữ còn đọc được), canh lề trái để luôn thấy khối trung tâm
+        if (isM() && layout() === 'right' && s < .8 && b.h * .8 < v.h * 1.4) {s = .8; tx = 12 - b.x * s}
+        go(tx, v.h / 2 - (b.y + b.h / 2) * s, s);
       }
-      function fit() {
-        const b = g.node().getBBox(); const v = view(); if (!b.width || !v.w) return;
-        let s = Math.min(1.1, .94 * Math.min(v.w / (b.width + (isM() ? 24 : 80)), v.h / (b.height + 40)));
-        let tx = v.w / 2 - (b.x + b.width / 2) * s;
-        // điện thoại: không thu nhỏ dưới 0,8 (chữ còn đọc được); nếu tràn thì canh lề phải để thấy trọn các nhánh,
-        // phần nhãn gốc bên trái có thể bị khuất (tiêu đề gốc đã hiện trong ngăn kéo)
-        if (isM() && s < .8 && b.height * .8 < v.h * 1.4) {s = .8; tx = v.w - 10 - (b.x + b.width) * s}
-        svg.transition().duration(450).call(zoom.transform, d3.zoomIdentity.translate(tx, v.h / 2 - (b.y + b.height / 2) * s).scale(s))
+      const fit = () => fitTo(H.descendants());
+      function center(d, k) {
+        const v = view(), t = d3.zoomTransform(svg.node());
+        const s = k || Math.max(t.k, isM() ? .9 : .75);
+        // nút bên phải: đặt lệch trái để nhánh con có chỗ; nút bên trái: đặt lệch phải; gốc: giữa (1 bên: sát trái)
+        const px = d.depth === 0 ? (layout() === 'right' ? (isM() ? 12 + d.rw * s : v.w * .3) : v.w / 2)
+          : d.side > 0 ? (isM() ? 18 : v.w * .3) : (isM() ? v.w - 18 : v.w * .7);
+        go(px - d.y * s, v.h / 2 - d.x * s, s);
       }
 
       // ---- detail panel / bottom sheet ----
@@ -1654,7 +1915,11 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         h += `<span class="peekhint">▲ Chạm hoặc vuốt lên để xem chi tiết${d._children ? ' · ' + d._children.length + ' nhánh con' : ''}</span>`;
         if (d.data.tag) {const t = TAGS[d.data.tag]; h += `<span class="tag ${t[0]}">${t[1]}</span>`}
         h += `<div class="detail">${fmt(d.data.d, d.data.tag === 'f') || (d._children ? '' : '<p class="empty">Không có ghi chú thêm.</p>')}</div>`;
-        if (d._children) {h += '<div class="kids"><h3>Nhánh con (' + d._children.length + ')</h3>' + d._children.map(c => `<button data-k="${c.key}">${c.data.tag ? ({f: 'ƒ ', vd: '▸ ', '!': '⚠ ', '↔': '↔ '})[c.data.tag] : ''}${esc(c.data.name)}</button>`).join('') + '</div>'}
+        if (d._children) {
+          h += '<div class="kids"><h3>Nhánh con (' + d._children.length + ')</h3>' + d._children.map(c =>
+            `<button data-k="${c.key}" style="--kc:${col(c)}"><span>${c.data.tag ? ICON[c.data.tag] : ''}${esc(c.data.name)}</span>${c._children ? `<small>${c._children.length}</small>` : ''}</button>`).join('') + '</div>'
+        }
+        if (d.depth === 0) h += '<div class="legend"><h3>Ký hiệu</h3><span><b>ƒ</b> Công thức</span><span><b>▸</b> Ví dụ / bài tập</span><span><b>⚠' + VS + '</b> Lưu ý, lỗi slide</span><span><b>↔</b> Liên kết chương</span><span><b class="cnt">3</b> Số nhánh đang thu gọn</span></div>';
         panelBody.innerHTML = h; panelBody.scrollTop = 0;
         if (sheet) setSheet(sheet);
       }
@@ -1671,7 +1936,7 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
       const chips = document.getElementById('chips');
       H._children.forEach(c => {
         const b = document.createElement('button'); b.className = 'chip';
-        const [cn, cs] = c.data.name.replace(/^[✦∑⚠] /, '').split(' · ');
+        const [cn, cs] = c.data.name.replace(/^[✦∑⚠]︎? /, '').split(' · ');
         b.innerHTML = `<i style="background:${col(c)}"></i>${esc(cn)}` + (cs ? ` <span style="font-weight:500;color:var(--muted)">${esc(cs)}</span>` : '');
         b.onclick = () => {
           H._children.forEach(o => {if (o !== c) o.children = null});
@@ -1684,11 +1949,7 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         };
         chips.appendChild(b)
       });
-      function fitNode(c) {
-        const ds = c.descendants().concat([H]); const x0 = d3.min(ds, d => d.x), x1 = d3.max(ds, d => d.x), y0 = d3.min(ds, d => d.y), y1 = d3.max(ds, d => d.y) + 260;
-        const r = svg.node().getBoundingClientRect(); const s = Math.max(.3, Math.min(1, .92 * Math.min(r.width / (y1 - y0 + 60), r.height / (x1 - x0 + 60))));
-        svg.transition().duration(450).call(zoom.transform, d3.zoomIdentity.translate(r.width / 2 - ((y0 + y1) / 2) * s, r.height / 2 - ((x0 + x1) / 2) * s).scale(s))
-      }
+      function fitNode(c) {fitTo(c.descendants().concat([H]))}
 
       // ---- buttons ----
       document.getElementById('bExpand').onclick = () => {collapseTo(99); update(H); fit(); buildOutline(true)};
@@ -1696,6 +1957,13 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
       document.getElementById('zin').onclick = () => svg.transition().duration(250).call(zoom.scaleBy, 1.4);
       document.getElementById('zout').onclick = () => svg.transition().duration(250).call(zoom.scaleBy, 1 / 1.4);
       document.getElementById('zfit').onclick = fit;
+      // ---- đổi bố cục 1 bên ⇄ 2 bên (ghi nhớ lựa chọn) ----
+      const zlay = document.getElementById('zlay');
+      function syncLay() {const b = layout() === 'both'; zlay.setAttribute('aria-pressed', b); zlay.title = b ? 'Bố cục: 2 bên (bấm để chuyển 1 bên)' : 'Bố cục: 1 bên (bấm để chuyển 2 bên)'}
+      zlay.onclick = () => {layPref = layout() === 'both' ? 'right' : 'both'; try {localStorage.setItem(LAY_KEY, layPref)} catch (e) { }; syncLay(); update(H); fit()};
+      syncLay();
+      // phông Be Vietnam Pro tải xong muộn → đo lại nhãn & dàn lại cho khít
+      document.fonts?.ready?.then(() => {update(H); if (!stageEl.hidden) fit()});
 
       // ---- search ----
       const q = document.getElementById('q'), res = document.getElementById('res');
@@ -1769,7 +2037,7 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         clearTimeout(rt); rt = setTimeout(() => {
           if (isM() && sheetPx) panel.dataset.state === 'full' ? applySheet(maxH()) : applySheet(sheetPx);
           if (!isM()) {const w = parseInt(panel.style.getPropertyValue('--panel-w')); if (w) setPanelW(w)}
-          if (Math.abs(innerWidth - lastW) > 40) {lastW = innerWidth; update(H); if (!document.getElementById('stage').hidden) fit()}
+          if (Math.abs(innerWidth - lastW) > 40) {lastW = innerWidth; syncLay(); update(H); if (!document.getElementById('stage').hidden) fit()}
         }, 150)
       });
       const onMq = () => {
