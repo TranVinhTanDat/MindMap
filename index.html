@@ -393,10 +393,19 @@
       stroke-width: 2
     }
 
-    .node .cnt {
-      font-size: 11px;
-      font-weight: 700;
-      fill: var(--muted)
+    .node .badge text {
+      font: 700 11px var(--font);
+      fill: var(--surface) !important;
+      stroke: none;
+      text-decoration: none !important
+    }
+
+    .node .badge rect {
+      opacity: .92
+    }
+
+    .node:hover .badge rect {
+      opacity: 1
     }
 
     .node {
@@ -736,7 +745,8 @@
 
     .kids button small {
       flex: none;
-      font: 700 11px var(--mono);
+      font: 600 11.5px var(--font);
+      white-space: nowrap;
       color: var(--muted);
       background: var(--bg);
       border-radius: 999px;
@@ -1579,7 +1589,7 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         {!} Lưu ý dịch slide 7R :: Bản Việt thay “Đúng số lượng” bằng “Đúng chất lượng”. Bản gốc tiếng Anh là RIGHT QUANTITY – học theo bản gốc.
       Phương thức – Phương tiện – Loại hình :: • Phương thức (mode): đường bộ, biển, hàng không, sắt, ống. ¶• Phương tiện: tàu, sà lan, xe tải, máy bay… ¶• Loại hình (cách thực hiện vận chuyển): Đơn phương thức (1 mode) · Liên phương thức – Intermodal (nhiều mode, theo slide Việt: KHÔNG đổi phương tiện chứa hàng – VD cùng một container) · Đa phương thức – Multimodal (nhiều mode, CÓ thay đổi phương tiện) · Vận tải kết hợp – Combined (tùy biến linh hoạt theo yêu cầu). ¶(Bổ sung) Theo thông lệ quốc tế, đa phương thức thường chỉ do MỘT người kinh doanh vận tải đa phương thức chịu trách nhiệm theo MỘT hợp đồng/chứng từ.
       5 phương thức & phương tiện :: • HÀNG KHÔNG: Hàng kiện (Package) – đi bằng máy bay chở hàng (Freighter) hoặc khoang bụng máy bay khách (Belly hold) · Hàng siêu trọng (Heavy). ¶• ĐƯỜNG BIỂN: Hàng bách hóa đóng kiện (Break-bulk) · Hàng lỏng xá (Liquid bulk) · Tàu RoRo (xe tự lăn lên/xuống) · Hàng rời khô (Dry bulk) · Container (ISO tiêu chuẩn, lạnh – Reefer, mặt bằng – Flatrack, bồn – Tank). ¶  Thủy nội địa/ven biển: tàu sông–biển · tàu kéo sà lan (sà lan bồn, sà lan boong, sà lan hàng rời) · container. ¶• ĐƯỜNG SẮT: Tàu chuyên tuyến (Unit train) · Hàng theo toa (Carload: toa kín, toa bồn, toa sàn phẳng, toa lạnh, toa hàng rời đáy phễu, toa mở – Gondola) · Liên vận (Intermodal: TOFC – rơ moóc xe tải trên toa, container nội địa). ¶• ĐƯỜNG BỘ: Hàng kiện (Package) · Hàng lẻ (LTL) · Nguyên xe (TL: xe thùng kín – Dry van, xe bồn, sàn phẳng, bạt rèm, xe lạnh, xe hàng rời, xe mui trần, khung gầm chở container – Chassis). ¶• ĐƯỜNG ỐNG: dầu, khí, nước.
-  ✦ Liên kết xuyên chương :: Những khái niệm xuất hiện ở nhiều chương – hiểu mối nối giúp làm bài tình huống và trả lời câu hỏi tổng hợp.
+  ↔ Liên kết xuyên chương :: Những khái niệm xuất hiện ở nhiều chương – hiểu mối nối giúp làm bài tình huống và trả lời câu hỏi tổng hợp.
     {↔} S&OP :: C1 (Plan trong SCOR) → C4 (khung quản lý nhu cầu, tầm CY+3) → C5 (quy trình hằng tháng, một bộ số chung). Giải quyết mâu thuẫn Marketing – Vận hành – Tài chính ở C1.
     {↔} Nhu cầu phụ thuộc → MRP :: C4 (chỉ dự báo nhu cầu độc lập) → C5 (MPS + BOM → MRP) → C6 (MRP là một cách bổ sung tồn kho, L4L).
     {↔} ABC :: C4 (ABC + XYZ cho chiến lược dự báo) → C6 (ABC + FMR cho chiến lược tồn kho) → C7 (ưu tiên quan hệ NCC hàng A).
@@ -1704,13 +1714,15 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
 
       function lbl(s, max) {return s.length > max ? s.slice(0, max - 1) + '…' : s}
       const labelOf = d => (d.data.tag ? ICON[d.data.tag] : '') + lbl(d.data.name, maxChars(d));
-      const countOf = d => d._children && !d.children ? ' ' + d._children.length : '';
+      // số nhánh con đang THU GỌN (0 nếu nhánh đang mở hoặc là lá) – hiển thị thành huy hiệu “+N” ở đầu ngoài nhánh
+      const countOf = d => d._children && !d.children ? d._children.length : 0;
       // gốc: điện thoại tách 2 dòng tại dấu “–” để khối trung tâm hẹp lại
       // gốc trên điện thoại: tách tại “–” rồi ngắt dòng ≤15 ký tự → khối trung tâm hẹp, nhường chỗ cho nhánh
       function wrap(s, n) {const out = []; let cur = ''; s.split(' ').forEach(w => {if (cur && (cur + ' ' + w).length > n) {out.push(cur); cur = w} else cur = cur ? cur + ' ' + w : w}); if (cur) out.push(cur); return out}
       const rootLines = () => isM() ? H.data.name.split(' – ').flatMap(p => wrap(p, 15)) : [H.data.name];
       // độ dài từ tâm nút tới mép ngoài nhãn (nơi đường nối tới con bắt đầu)
-      const ext = d => d.depth === 0 ? d.rw : d.depth === 1 ? d.tw + 24 : d.tw + 14;
+      const base = d => d.depth === 1 ? d.tw + 24 : d.tw + 14;          // tới cuối nhãn
+      const ext = d => d.depth === 0 ? d.rw : base(d) + (d.bw ? d.bw + 6 : 0);   // + huy hiệu nếu đang thu gọn
       const sideOf = d => d.depth === 0 ? 0 : d.side;
 
       function layoutTree() {
@@ -1721,7 +1733,8 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         H.descendants().forEach(d => {
           if (d.depth === 0) {const L = rootLines(); d.lines = L; d.rw = Math.max(...L.map(s => measure(s, FONT(d)))) / 2 + 18; d.rh = L.length * 20 + 18; return}
           d.label = labelOf(d); d.cnt = countOf(d);
-          d.tw = measure(d.label, FONT(d)) + (d.cnt ? measure(d.cnt, `700 11px ${FF}`) + 4 : 0);
+          d.tw = measure(d.label, FONT(d));
+          d.bw = d.cnt ? measure('+' + d.cnt, `700 11px ${FF}`) + 12 : 0;
         });
         // vị trí dọc: dàn riêng từng bên rồi canh để gốc nằm giữa mỗi bên
         const tree = d3.tree().nodeSize([dxv, 1]).separation((a, b) => (a.parent === b.parent ? 1 : 1.25) * (a.depth === 1 ? 1.32 : 1));
@@ -1785,6 +1798,9 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         en.filter(d => d.depth <= 1).append('rect').attr('class', d => d.depth === 0 ? 'root-box' : 'pill');
         en.filter(d => d.depth > 0).append('circle');
         en.append('text');
+        const eb = en.filter(d => d.depth > 0).append('g').attr('class', 'badge');
+        eb.append('rect'); eb.append('text');
+        en.append('title');   // chú thích khi rê chuột: tên đầy đủ + hướng dẫn
 
         const all = en.merge(nd);
         all.classed('sel', d => d === selected).classed('hit', d => hits.has(d.key))
@@ -1811,9 +1827,16 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
           }
           const s = d.side, pad = d.depth === 1 ? 15 : 10;
           t.attr('text-anchor', s > 0 ? 'start' : 'end').attr('x', s * pad).attr('dy', '0.34em');
-          if (s > 0) {t.append('tspan').text(d.label); if (d.cnt) t.append('tspan').attr('class', 'cnt').attr('dx', 4).text(d.cnt.trim())}
-          else {if (d.cnt) t.append('tspan').attr('class', 'cnt').text(d.cnt.trim()); t.append('tspan').attr('dx', d.cnt ? 4 : 0).text(d.label)}
+          t.text(d.label);
         });
+        // huy hiệu “+N” = còn N nhánh con đang thu gọn; nằm ở đầu ngoài, đúng chỗ nhánh con sẽ mọc ra
+        all.select('g.badge').each(function (d) {
+          const b = d3.select(this).style('display', d.cnt ? null : 'none'); if (!d.cnt) return;
+          const x = d.side > 0 ? base(d) + 3 : -(base(d) + 3 + d.bw);
+          b.select('rect').attr('x', x).attr('y', -9).attr('width', d.bw).attr('height', 18).attr('rx', 9).style('fill', col(d));
+          b.select('text').attr('x', x + d.bw / 2).attr('dy', '0.35em').attr('text-anchor', 'middle').text('+' + d.cnt);
+        });
+        all.select('title').text(d => d.data.name + (d.depth === 0 ? '' : d._children ? (d.children ? ' · bấm để thu gọn' : ` · ${d._children.length} nhánh con – bấm để mở`) : ' · bấm để xem chi tiết'));
         // vùng chạm trong suốt phủ chấm + nhãn
         all.select('rect.ha').each(function (d) {
           const r = d3.select(this);
@@ -1822,7 +1845,8 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         });
         nodes.forEach(d => {d.x0 = d.x; d.y0 = d.y});
       }
-      function toggle(d) {if (!d._children) return; d.children = d.children ? null : d._children; update(d)}
+      // gốc không thu gọn được (trước đây bấm vào gốc làm biến mất toàn bộ 13 nhánh – dễ tưởng là lỗi)
+      function toggle(d) {if (!d._children || d.depth === 0) return; d.children = d.children ? null : d._children; update(d)}
 
       // khung bao tính từ dữ liệu bố cục (không đo DOM → đúng cả khi đang chạy hiệu ứng)
       function bounds(list) {
@@ -2002,9 +2026,9 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         h += `<div class="detail">${fmt(d.data.d, d.data.tag === 'f') || (d._children ? '' : '<p class="empty">Không có ghi chú thêm.</p>')}</div>`;
         if (d._children) {
           h += '<div class="kids"><h3>Nhánh con (' + d._children.length + ')</h3>' + d._children.map(c =>
-            `<button data-k="${c.key}" style="--kc:${col(c)}"><span>${c.data.tag ? ICON[c.data.tag] : ''}${esc(c.data.name)}</span>${c._children ? `<small>${c._children.length}</small>` : ''}</button>`).join('') + '</div>'
+            `<button data-k="${c.key}" style="--kc:${col(c)}"><span>${c.data.tag ? ICON[c.data.tag] : ''}${esc(c.data.name)}</span>${c._children ? `<small>${c._children.length} mục</small>` : ''}</button>`).join('') + '</div>'
         }
-        if (d.depth === 0) h += '<div class="legend"><h3>Ký hiệu</h3><span><b>ƒ</b> Công thức</span><span><b>▸</b> Ví dụ / bài tập</span><span><b>⚠' + VS + '</b> Lưu ý, lỗi slide</span><span><b>↔</b> Liên kết chương</span><span><b class="cnt">3</b> Số nhánh đang thu gọn</span></div>';
+        if (d.depth === 0) h += '<div class="legend"><h3>Ký hiệu</h3><span><b>ƒ</b> Công thức</span><span><b>▸</b> Ví dụ / bài tập</span><span><b>⚠' + VS + '</b> Lưu ý, lỗi slide</span><span><b>↔</b> Liên kết chương</span><span><b class="cnt">+3</b> Còn 3 nhánh con đang thu gọn – bấm để mở</span><span><b>●</b> chấm đặc = đang thu gọn · <b>○</b> chấm rỗng = đang mở</span></div>';
         panelBody.innerHTML = h; panelBody.scrollTop = 0;
         if (sheet) setSheet(sheet);
       }
@@ -2021,7 +2045,7 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
       const chips = document.getElementById('chips');
       H._children.forEach(c => {
         const b = document.createElement('button'); b.className = 'chip';
-        const [cn, cs] = c.data.name.replace(/^[✦∑⚠]︎? /, '').split(' · ');
+        const [cn, cs] = c.data.name.replace(/^[✦∑⚠↔]︎? /, '').split(' · ');
         b.innerHTML = `<i style="background:${col(c)}"></i>${esc(cn)}` + (cs ? ` <span style="font-weight:500;color:var(--muted)">${esc(cs)}</span>` : '');
         b.onclick = () => {
           H._children.forEach(o => {if (o !== c) o.children = null});
