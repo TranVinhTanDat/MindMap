@@ -1,0 +1,9 @@
+# Giáo trình gốc có bản quyền VILAS – không đưa lên repo công khai
+HocTap/
+*.pdf
+
+# Rác hệ điều hành / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
