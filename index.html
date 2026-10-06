@@ -5,6 +5,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Mindmap SCEO Chuỗi cung ứng</title>
+  <meta name="description"
+    content="Sơ đồ tư duy ôn tập 9 chương SCEO (VILAS SC Essentials): tổng quan chuỗi cung ứng, dữ liệu, bán lẻ, dự báo nhu cầu, sản xuất, tồn kho, thu mua, rủi ro, logistics – kèm công thức, thuật ngữ và lỗi slide cần biết.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#19221f" media="(prefers-color-scheme: dark)">
+  <!-- bản xem trước khi chia sẻ link (Facebook, Zalo, Messenger…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:title" content="Mindmap SCEO · Chuỗi cung ứng toàn diện">
+  <meta property="og:description" content="Sơ đồ tư duy ôn tập 9 chương VILAS SC Essentials – công thức, ví dụ, thuật ngữ, lỗi slide.">
+  <meta property="og:url" content="https://tranvinhtandat.github.io/MindMap/">
+  <meta property="og:image" content="https://tranvinhtandat.github.io/MindMap/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap">
@@ -1162,6 +1178,75 @@
       }
     }
 
+    /* In / lưu PDF (Ctrl+P): in toàn bộ Dàn ý đã mở hết, bỏ sơ đồ & nút điều khiển */
+    @media print {
+
+      html,
+      body {
+        height: auto !important;
+        overflow: visible !important;
+        background: #fff !important;
+        color: #000
+      }
+
+      .app {
+        height: auto !important;
+        display: block
+      }
+
+      header,
+      .chips,
+      #stage,
+      #panel,
+      .split {
+        display: none !important
+      }
+
+      main {
+        display: block
+      }
+
+      #outline,
+      #outline[hidden] {
+        display: block !important;
+        overflow: visible !important;
+        padding: 0
+      }
+
+      #outline .wrap {
+        max-width: none
+      }
+
+      #outline summary {
+        list-style: none
+      }
+
+      #outline summary::-webkit-details-marker {
+        display: none
+      }
+
+      #outline .lvl1 {
+        break-before: page
+      }
+
+      #outline .lvl1:first-of-type {
+        break-before: auto
+      }
+
+      #outline .leaf,
+      #outline summary {
+        break-inside: avoid
+      }
+
+      #outline .od {
+        color: #333
+      }
+
+      .fx {
+        border: 1px solid #ccd
+      }
+    }
+
     .chip[aria-current] {
       border-color: var(--accent);
       background: var(--accent-soft)
@@ -2004,6 +2089,10 @@ SCEO – Chuỗi cung ứng toàn diện :: Bộ 9 chương VILAS SC Essentials 
         if (el.tagName === 'DETAILS') el.open = true; el.scrollIntoView({behavior: 'smooth', block: 'start'})
       }
       buildOutline(false);
+      // Khi in: dựng Dàn ý mở hết mọi nhánh; in xong trả lại trạng thái mở/đóng như cũ
+      let outSnap = null;
+      addEventListener('beforeprint', () => {outSnap = outWrap.innerHTML; buildOutline(true)});
+      addEventListener('afterprint', () => {if (outSnap != null) {outWrap.innerHTML = outSnap; outSnap = null}});
 
       // ---- view toggle ----
       const vMap = document.getElementById('vMap'), vOut = document.getElementById('vOut');
