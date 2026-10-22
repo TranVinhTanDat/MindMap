@@ -1341,14 +1341,14 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
     Kế toán :: Duyệt bước Kế toán (khi bật); duyệt chi phí bảo trì; khấu hao, báo cáo tài sản; nghiệm thu QC.
     Kế toán trưởng :: Duyệt bước KT trưởng (khi bật); ủy quyền duyệt khi vắng; báo cáo tài sản.
     Ban Giám đốc :: Duyệt bước Ban GĐ (khi bật); ký quyết định thanh lý / thu hồi; ủy quyền duyệt; xem báo cáo.
-  Phiếu đề xuất :: Khoa xin cấp vật tư/hàng (Đề xuất hàng hóa) hoặc báo sửa chữa thiết bị (Yêu cầu sửa chữa). Là điểm khởi đầu của luồng cấp phát. ¶Ai lập phiếu: Nhân viên khoa, Quản lý kho, ADMIN. ¶Luồng đang chạy: Chờ QLK lập phiếu → Chờ QLK xử lý → Hoàn thành.
+  Phiếu đề xuất :: Khoa xin cấp hàng có sẵn (Đề xuất hàng hóa), đề nghị mua mới (Đề xuất mua sắm) hoặc báo sửa chữa thiết bị (Yêu cầu sửa chữa). Là điểm khởi đầu của luồng cấp phát và mua sắm (QT-01). ¶Ai lập phiếu: Nhân viên khoa, Quản lý kho, ADMIN. ¶Luồng đang chạy: Chờ QLK lập phiếu → Chờ QLK xử lý → Hoàn thành.
     Luồng: Chờ QLK lập phiếu → Chờ QLK xử lý → Hoàn thành :: Đường đi của phiếu với cấu hình đang chạy (các bước duyệt đang tắt được bỏ qua).
     Các bước làm :: Thứ tự thao tác trên hệ thống.
-      {vd} 1. Tạo đề xuất :: Nhân viên khoa bấm "Tạo đề xuất": chọn khoa, lý do, danh sách hàng (hoặc thiết bị + mô tả sự cố nếu sửa chữa).
-      {vd} 2. Lập phiếu :: Quản lý kho bấm "Lập phiếu": hệ thống tự tạo phiếu nhập (nháp) cho phần cần mua.
-      {vd} 3. Chờ QLK xử lý :: Luồng gọn: đề xuất tới thẳng "Chờ QLK xử lý", phiếu nhập liên kết tự sang "Đang xử lý".
-      {vd} 4. Xử lý :: Quản lý kho bấm "Xử lý": chọn Tạo phiếu nhập (mua mới) hoặc Xuất kho trực tiếp (cấp từ tồn) → đề xuất Hoàn thành.
-      {vd} 5. Bắt đầu SC :: Sửa chữa: Chờ QLK xử lý → "Bắt đầu SC" → "Hoàn thành SC".
+      {vd} 1. Tạo đề xuất :: Nhân viên khoa bấm "Tạo đề xuất": chọn loại, lý do, danh sách hàng (hoặc thiết bị + mô tả sự cố nếu sửa chữa).
+      {vd} 2. Xuất kho :: Xin cấp hàng có sẵn: Trưởng khoa xác nhận nhu cầu → Quản lý kho "Xuất kho" (không sinh phiếu nhập, không qua KT/BGĐ). Kho không đủ hàng thì QLK "Từ chối" kèm lý do để khoa lập đề xuất mua sắm.
+      {vd} 3. Lập phiếu :: Mua sắm: Quản lý kho bấm "Lập phiếu" (tự tạo phiếu nhập nháp) → Trưởng khoa → Kế toán → KTT → BGĐ (theo bước đang bật) → QLK "Xử lý".
+      {vd} 4. Bắt đầu SC :: Sửa chữa: Trưởng khoa xác nhận → Chờ QLK xử lý → "Bắt đầu SC" → "Hoàn thành SC".
+      {vd} 5. Khoa đã nhận :: Khoa nhận hàng bấm "Khoa đã nhận" ngay trong chi tiết đề xuất khi phiếu xuất đã giao (QT-03).
     Bước duyệt (cấu hình) :: Bước TẮT thì phiếu tự đi qua; ADMIN bật lại trong Cấu hình quy trình.
       Quản lý kho lập phiếu nhập — Quản lý kho :: Chờ QLK lập phiếu → Chờ Trưởng khoa duyệt. ¶Trạng thái: ĐANG BẬT.
       Trưởng khoa duyệt — Trưởng khoa phòng :: Chờ Trưởng khoa duyệt → Chờ Kế toán duyệt. ¶Từ chối → TKP từ chối. ¶Trạng thái: đang tắt.
@@ -1372,7 +1372,7 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
       Kế toán duyệt — Kế toán :: Chờ Kế toán duyệt → Chờ KT trưởng duyệt. ¶Từ chối → Đã hủy. ¶Trạng thái: đang tắt.
       Kế toán trưởng duyệt — Kế toán trưởng :: Chờ KT trưởng duyệt → Đang xử lý. ¶Từ chối → Đã hủy. ¶Trạng thái: đang tắt.
       Xác nhận nhận hàng & cập nhật tồn kho — Quản lý kho :: Đang xử lý → Hoàn thành. ¶Trạng thái: ĐANG BẬT.
-    {f} In: Phiếu nhập kho :: Mẫu: C30-HD. ¶Định dạng: Word (xem trước + tải), Excel, In từ trình duyệt. ¶Khi nào: Mọi trạng thái; bản ký lưu sau khi Hoàn thành (Người lập | Người giao hàng | Thủ kho) / Mọi trạng thái / Trong chi tiết phiếu, mọi trạng thái. ¶Ai in: Người có quyền xuất phiếu nhập.
+    {f} In: Phiếu nhập kho :: Mẫu: BVTP-NK. ¶Định dạng: Word (xem trước + tải), Excel, In từ trình duyệt. ¶Khi nào: Mọi trạng thái; bản ký lưu sau khi Hoàn thành (Người lập | Người giao hàng | Thủ kho) / Mọi trạng thái / Trong chi tiết phiếu, mọi trạng thái. ¶Ai in: Người có quyền xuất phiếu nhập.
     {!} Tác động & điểm chặn :: Tồn kho chỉ CỘNG ở bước Xác nhận nhận hàng.
   Xuất kho :: Cấp hàng từ kho cho khoa; trừ tồn theo lô hết hạn trước xuất trước (FEFO). ¶Ai lập phiếu: Quản lý kho (kho mình), ADMIN; phiếu sinh tự động từ đề xuất. ¶Luồng đang chạy: Nháp (phiếu xuất) → Đang xuất → Đã giao.
     Luồng: Nháp (phiếu xuất) → Đang xuất → Đã giao :: Đường đi của phiếu với cấu hình đang chạy (các bước duyệt đang tắt được bỏ qua).
@@ -1387,7 +1387,7 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
       Kế toán duyệt — Kế toán :: Chờ Kế toán duyệt → Chờ KT trưởng duyệt. ¶Từ chối → Đã hủy. ¶Trạng thái: đang tắt.
       Kế toán trưởng duyệt — Kế toán trưởng :: Chờ KT trưởng duyệt → Đang xuất. ¶Từ chối → Đã hủy. ¶Trạng thái: đang tắt.
       Giao hàng & trừ tồn kho — Quản lý kho :: Đang xuất → Đã giao. ¶Trạng thái: ĐANG BẬT.
-    {f} In: Phiếu xuất kho :: Mẫu: C31-HD. ¶Định dạng: Word (xem trước + tải), Excel, In từ trình duyệt. ¶Khi nào: Mọi trạng thái; bản ký lưu sau khi Đã giao / Mọi trạng thái / Trong chi tiết phiếu, mọi trạng thái. ¶Ai in: Người có quyền xuất phiếu xuất.
+    {f} In: Phiếu xuất kho :: Mẫu: BVTP-XK. ¶Định dạng: Word (xem trước + tải), Excel, In từ trình duyệt. ¶Khi nào: Mọi trạng thái; bản ký lưu sau khi Đã giao / Mọi trạng thái / Trong chi tiết phiếu, mọi trạng thái. ¶Ai in: Người có quyền xuất phiếu xuất.
     {!} Tác động & điểm chặn :: Tồn kho chỉ TRỪ ở bước Xác nhận giao.
   Bảo trì :: Theo dõi bảo dưỡng, sửa chữa thiết bị và nghiệm thu chất lượng (QC) trước khi đưa lại vào sử dụng. ¶Ai lập phiếu: Quản lý kho, ADMIN. ¶Luồng đang chạy: Chờ duyệt → Đang thực hiện → Chờ kiểm tra QC → Hoàn thành.
     Luồng: Chờ duyệt → Đang thực hiện → Chờ kiểm tra QC → Hoàn thành :: Đường đi của phiếu với cấu hình đang chạy (các bước duyệt đang tắt được bỏ qua).
@@ -1402,7 +1402,7 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
       Kế toán duyệt chi phí — Kế toán :: Chờ Kế toán duyệt → Đang thực hiện. ¶Từ chối → Đã hủy. ¶Trạng thái: đang tắt.
       Hoàn thành thực hiện & chờ QC — Quản lý kho :: Đang thực hiện → Chờ kiểm tra QC. ¶Trạng thái: ĐANG BẬT.
       Kiểm tra chất lượng & hoàn thành — Kiểm tra QC :: Chờ kiểm tra QC → Hoàn thành. ¶Trạng thái: ĐANG BẬT.
-    {f} In: Giấy báo hỏng, mất công cụ dụng cụ :: Mẫu: C22-HD (đang ghi trong hệ thống). ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Trong chi tiết phiếu bảo trì, mọi trạng thái. ¶Ai in: Người xem được phiếu bảo trì. ¶Số hiệu mẫu chưa được Kế toán đối chiếu.
+    {f} In: Giấy báo hỏng, đề nghị sửa chữa :: Mẫu: BVTP-BH. ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Trong chi tiết phiếu bảo trì, mọi trạng thái. ¶Ai in: Người xem được phiếu bảo trì.
     {!} Tác động & điểm chặn :: Đổi tình trạng thiết bị: Đang bảo trì → Đang sử dụng / Hư hỏng.
   Điều chuyển / Thu hồi :: Luân chuyển tài sản giữa các khoa, hoặc thu hồi tài sản về đơn vị quản lý theo quyết định. ¶Ai lập phiếu: Quản lý kho, Trưởng khoa, ADMIN. ¶Luồng đang chạy: Đang bàn giao → Hoàn thành.
     Luồng: Đang bàn giao → Hoàn thành :: Đường đi của phiếu với cấu hình đang chạy (các bước duyệt đang tắt được bỏ qua).
@@ -1417,7 +1417,7 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
       Kế toán duyệt — Kế toán :: Chờ Kế toán duyệt → Chờ KT trưởng duyệt. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
       Kế toán trưởng duyệt — Kế toán trưởng :: Chờ KT trưởng duyệt → Chờ Ban GĐ duyệt. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
       Ban giám đốc duyệt — Ban giám đốc :: Chờ Ban GĐ duyệt → Đang bàn giao. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
-    {f} In: Phiếu điều chuyển tài sản, công cụ dụng cụ :: Mẫu: C22-HD (đang ghi trong hệ thống). ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang bàn giao / Hoàn thành. ¶Ai in: Người xem được phiếu. ¶Số hiệu mẫu chưa được Kế toán đối chiếu.
+    {f} In: Biên bản bàn giao tài sản nội bộ :: Mẫu: BVTP-BG. ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang bàn giao / Hoàn thành. ¶Ai in: Người xem được phiếu.
     {!} Tác động & điểm chặn :: Hoàn thành: thiết bị đổi khoa sử dụng.
   Kiểm kê :: Đối chiếu tài sản thực tế với sổ sách (định kỳ, cuối năm); xử lý chênh lệch. ¶Ai lập phiếu: Quản lý kho, ADMIN. ¶Luồng đang chạy: Chuẩn bị → Đang kiểm kê → Đã xử lý.
     Luồng: Chuẩn bị → Đang kiểm kê → Đã xử lý :: Đường đi của phiếu với cấu hình đang chạy (các bước duyệt đang tắt được bỏ qua).
@@ -1432,7 +1432,7 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
       Kế toán duyệt — Kế toán :: Chờ Kế toán duyệt → Chờ KT trưởng duyệt. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
       Kế toán trưởng duyệt — Kế toán trưởng :: Chờ KT trưởng duyệt → Chờ Ban GĐ duyệt. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
       Ban giám đốc duyệt — Ban giám đốc :: Chờ Ban GĐ duyệt → Đã xử lý. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
-    {f} In: Phiếu kiểm kê tài sản (kèm QR) :: Mẫu: Mẫu in BVĐKTP. ¶Định dạng: In từ trình duyệt + Excel. ¶Khi nào: Mọi trạng thái (nút "In phiếu KK"); bản đối chiếu lưu sau Hoàn thành KK. ¶Ai in: Người xem được phiếu kiểm kê.
+    {f} In: Phiếu kiểm kê tài sản (kèm QR, số QĐ thành lập hội đồng) :: Mẫu: Mẫu in BVĐKTP. ¶Định dạng: In từ trình duyệt + Excel. ¶Khi nào: Mọi trạng thái (nút "In phiếu KK"); bản đối chiếu lưu sau Hoàn thành KK. ¶Ai in: Người xem được phiếu kiểm kê.
     {!} Tác động & điểm chặn :: Hư hỏng/Mất → thiết bị "Chờ thanh lý" + tự sinh phiếu thanh lý chờ duyệt (không ghi giảm ngay). Không khôi phục tài sản đã thanh lý.
   Thanh lý :: Ghi giảm tài sản hư hỏng/không còn sử dụng theo quyết định của cấp có thẩm quyền (NĐ 186/2025/NĐ-CP). ¶Ai lập phiếu: Quản lý kho, ADMIN; phiếu tự sinh từ kiểm kê. ¶Luồng đang chạy: Đang thực hiện → Hoàn thành.
     Luồng: Đang thực hiện → Hoàn thành :: Đường đi của phiếu với cấu hình đang chạy (các bước duyệt đang tắt được bỏ qua).
@@ -1446,7 +1446,8 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
       Kế toán duyệt — Kế toán :: Chờ Kế toán duyệt → Chờ KT trưởng duyệt. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
       Kế toán trưởng duyệt — Kế toán trưởng :: Chờ KT trưởng duyệt → Chờ Ban GĐ duyệt. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
       Ban giám đốc duyệt — Ban giám đốc :: Chờ Ban GĐ duyệt → Đang thực hiện. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
-    {f} In: Biên bản (hệ thống đang in "Biên bản giao nhận TSCĐ") :: Mẫu: C51-HD (đang ghi trong hệ thống). ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang thực hiện / Hoàn thành. ¶Ai in: ADMIN, QLK, KT, KTT, BGĐ. ¶Số hiệu mẫu chưa được Kế toán đối chiếu.
+    {f} In: Biên bản thanh lý tài sản (căn cứ QĐ, hội đồng, giá trị, kết quả thu/chi) :: Mẫu: BVTP-TL. ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang thực hiện / Hoàn thành. ¶Ai in: ADMIN, QLK, KT, KTT, BGĐ.
+    {f} In: Biên bản giao nhận tài sản đã thanh lý (cho bên mua/nhận) :: Mẫu: BVTP-TL/GN. ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang thực hiện / Hoàn thành. ¶Ai in: ADMIN, QLK, KT, KTT, BGĐ.
     {!} Tác động & điểm chặn :: Chỉ ghi giảm ở bước Hoàn thành có số quyết định; một tài sản không ghi giảm 2 lần.
   Bồi thường bảo hiểm (ẩn) :: Lập hồ sơ đòi bồi thường bảo hiểm cho tài sản hư hỏng/mất (module đang ẩn khỏi menu). ¶Ai lập phiếu: Quản lý kho, ADMIN. ¶Luồng đang chạy: Nháp → Đã duyệt → Chờ bảo hiểm → Đang xử lý → Hoàn thành. ¶Module đang ẩn khỏi menu; quản trị bật lại khi dùng.
     Luồng: Nháp → Đã duyệt → Chờ bảo hiểm → Đang xử lý → Hoàn thành :: Đường đi của phiếu với cấu hình đang chạy (các bước duyệt đang tắt được bỏ qua).
@@ -1461,13 +1462,14 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
       Ban giám đốc duyệt — Ban giám đốc :: Chờ Ban GĐ duyệt → Đã duyệt. ¶Từ chối → Từ chối. ¶Trạng thái: đang tắt.
     {!} Tác động & điểm chặn :: Theo dõi số tiền bồi thường; không đổi tồn kho.
   In phiếu & biểu mẫu :: Tổng hợp mọi chứng từ hệ thống in / xuất file và LÚC NÀO in. ¶Bản ký lưu hồ sơ nên in sau khi phiếu hoàn thành; luồng gọn dùng bản in để ký tay các cấp duyệt.
-    {f} Phiếu nhập kho · Nhập kho :: Mẫu: C30-HD. ¶Định dạng: Word (xem trước + tải), Excel, In từ trình duyệt. ¶Khi nào: Mọi trạng thái; bản ký lưu sau khi Hoàn thành (Người lập | Người giao hàng | Thủ kho) / Mọi trạng thái / Trong chi tiết phiếu, mọi trạng thái. ¶Ai in: Người có quyền xuất phiếu nhập.
-    {f} Phiếu xuất kho · Xuất kho :: Mẫu: C31-HD. ¶Định dạng: Word (xem trước + tải), Excel, In từ trình duyệt. ¶Khi nào: Mọi trạng thái; bản ký lưu sau khi Đã giao / Mọi trạng thái / Trong chi tiết phiếu, mọi trạng thái. ¶Ai in: Người có quyền xuất phiếu xuất.
+    {f} Phiếu nhập kho · Nhập kho :: Mẫu: BVTP-NK. ¶Định dạng: Word (xem trước + tải), Excel, In từ trình duyệt. ¶Khi nào: Mọi trạng thái; bản ký lưu sau khi Hoàn thành (Người lập | Người giao hàng | Thủ kho) / Mọi trạng thái / Trong chi tiết phiếu, mọi trạng thái. ¶Ai in: Người có quyền xuất phiếu nhập.
+    {f} Phiếu xuất kho · Xuất kho :: Mẫu: BVTP-XK. ¶Định dạng: Word (xem trước + tải), Excel, In từ trình duyệt. ¶Khi nào: Mọi trạng thái; bản ký lưu sau khi Đã giao / Mọi trạng thái / Trong chi tiết phiếu, mọi trạng thái. ¶Ai in: Người có quyền xuất phiếu xuất.
     {f} Phiếu đề xuất (4 ô ký TKP–KT–KTT–BGĐ) · Phiếu đề xuất :: Mẫu: Mẫu in BVĐKTP. ¶Định dạng: In từ trình duyệt. ¶Khi nào: Trong chi tiết phiếu — luồng gọn dùng bản in này để ký tay 4 cấp. ¶Ai in: Người xem được phiếu.
-    {f} Giấy báo hỏng, mất công cụ dụng cụ · Bảo trì :: Mẫu: C22-HD (đang ghi trong hệ thống). ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Trong chi tiết phiếu bảo trì, mọi trạng thái. ¶Ai in: Người xem được phiếu bảo trì. ¶Số hiệu mẫu chưa được Kế toán đối chiếu.
-    {f} Phiếu điều chuyển tài sản, công cụ dụng cụ · Điều chuyển / Thu hồi :: Mẫu: C22-HD (đang ghi trong hệ thống). ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang bàn giao / Hoàn thành. ¶Ai in: Người xem được phiếu. ¶Số hiệu mẫu chưa được Kế toán đối chiếu.
-    {f} Biên bản (hệ thống đang in "Biên bản giao nhận TSCĐ") · Thanh lý :: Mẫu: C51-HD (đang ghi trong hệ thống). ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang thực hiện / Hoàn thành. ¶Ai in: ADMIN, QLK, KT, KTT, BGĐ. ¶Số hiệu mẫu chưa được Kế toán đối chiếu.
-    {f} Phiếu kiểm kê tài sản (kèm QR) · Kiểm kê :: Mẫu: Mẫu in BVĐKTP. ¶Định dạng: In từ trình duyệt + Excel. ¶Khi nào: Mọi trạng thái (nút "In phiếu KK"); bản đối chiếu lưu sau Hoàn thành KK. ¶Ai in: Người xem được phiếu kiểm kê.
+    {f} Giấy báo hỏng, đề nghị sửa chữa · Bảo trì :: Mẫu: BVTP-BH. ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Trong chi tiết phiếu bảo trì, mọi trạng thái. ¶Ai in: Người xem được phiếu bảo trì.
+    {f} Biên bản bàn giao tài sản nội bộ · Điều chuyển / Thu hồi :: Mẫu: BVTP-BG. ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang bàn giao / Hoàn thành. ¶Ai in: Người xem được phiếu.
+    {f} Biên bản thanh lý tài sản (căn cứ QĐ, hội đồng, giá trị, kết quả thu/chi) · Thanh lý :: Mẫu: BVTP-TL. ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang thực hiện / Hoàn thành. ¶Ai in: ADMIN, QLK, KT, KTT, BGĐ.
+    {f} Biên bản giao nhận tài sản đã thanh lý (cho bên mua/nhận) · Thanh lý :: Mẫu: BVTP-TL/GN. ¶Định dạng: Word (xem trước + tải). ¶Khi nào: Khi phiếu Đã duyệt / Đang thực hiện / Hoàn thành. ¶Ai in: ADMIN, QLK, KT, KTT, BGĐ.
+    {f} Phiếu kiểm kê tài sản (kèm QR, số QĐ thành lập hội đồng) · Kiểm kê :: Mẫu: Mẫu in BVĐKTP. ¶Định dạng: In từ trình duyệt + Excel. ¶Khi nào: Mọi trạng thái (nút "In phiếu KK"); bản đối chiếu lưu sau Hoàn thành KK. ¶Ai in: Người xem được phiếu kiểm kê.
     {f} Tem QR thiết bị (in hàng loạt / từng cái) · Tài sản :: Mẫu: Tem 4×7 hoặc 2×5 nhãn/trang. ¶Định dạng: In từ trình duyệt. ¶Khi nào: Bất kỳ lúc nào — dán lên thiết bị để kiểm kê bằng quét QR. ¶Ai in: Người xem được thiết bị.
     {f} Danh sách thiết bị/tài sản · Tài sản :: Mẫu: —. ¶Định dạng: Excel. ¶Khi nào: Theo bộ lọc đang chọn. ¶Ai in: Người xem được thiết bị.
     {f} Mẫu import máy móc thiết bị (17 cột) · Tài sản :: Mẫu: Mẫu import. ¶Định dạng: Excel (tải mẫu). ¶Khi nào: Trước khi nhập hàng loạt tài sản. ¶Ai in: ADMIN, QLK.
@@ -1481,6 +1483,7 @@ QLTS · Bệnh viện Đa khoa Tân Phú :: Hệ thống quản lý kho vật t�
     {f} Tổng hợp góp ý quy trình · Quản trị :: Mẫu: —. ¶Định dạng: Excel, Word. ¶Khi nào: Khi tổng hợp ý kiến người dùng. ¶Ai in: ADMIN.
     {f} Mô tả một quy trình để góp ý · Quản trị :: Mẫu: —. ¶Định dạng: Word. ¶Khi nào: Khi gửi quy trình cho khoa đọc và góp ý. ¶Ai in: Người dùng đăng nhập.
     {f} Toàn bộ quy trình để góp ý · Quản trị :: Mẫu: —. ¶Định dạng: Word. ¶Khi nào: Khi gửi toàn bộ quy trình cho khoa. ¶Ai in: Người dùng đăng nhập.
+    {f} Danh sách thiết bị y tế bắt buộc kiểm định (hạn 31/12/2026) · None :: Mẫu: Mẫu in BVĐKTP. ¶Định dạng: Excel. ¶Khi nào: Trang Thiết bị → nút "Kiểm định bắt buộc". ¶Ai in: Mọi người dùng đăng nhập.
   Duyệt & kiểm soát :: Các quy tắc áp cho MỌI phiếu có bước duyệt.
     {!} Hộp thư duyệt :: Mỗi người duyệt thấy mọi phiếu đang chờ mình ở một chỗ.
     {!} Không tự duyệt :: Người lập phiếu không duyệt / từ chối phiếu của chính mình (trừ quản trị).
